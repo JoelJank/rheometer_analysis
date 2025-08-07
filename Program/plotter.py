@@ -7,8 +7,8 @@ import sys
 import pandas as pd
 from openpyxl import load_workbook
 import json
+
 settings_path = "settings/settings.json"
-excel_path = "data/20250707Glass12_witharray.xlsx"
 
 def get_sheetnames(Filepath):
     wb = load_workbook(Filepath, read_only=True, keep_links=False)
@@ -137,6 +137,6 @@ plt.savefig(f"{settings['output_folder']}/{settings['title_of_experiment']}_Mohr
 with open(f"{settings['output_folder']}/mohr_coulomb.txt", "w") as f:
     f.write("Sheetname \t m \t n \t y-intercept \t Angle \n")
     for i in range(len(fit_data)):
-        f.write(f"{sheetnames[i]} \t {round(fit_data[i][0],3)} \t {round(fit_data[i][1],3)} \t {fit_data[i][2]} \t {fit_data[i][3]}")
+        f.write(f"{sheetnames[i]} \t {round(fit_data[i][0],3)} \t {round(fit_data[i][1],3)} \t {fit_data[i][2]} \t {fit_data[i][3]}\n")
 
 print("Program finished")

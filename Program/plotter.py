@@ -140,16 +140,3 @@ with open(f"{settings['output_folder']}/mohr_coulomb.txt", "w") as f:
         f.write(f"{sheetnames[i]} \t {round(fit_data[i][0],3)} \t {round(fit_data[i][1],3)} \t {fit_data[i][2]} \t {fit_data[i][3]}")
 
 print("Program finished")
-
-
-        
-    
-
-    
-    
-    
-
-
-
-
-

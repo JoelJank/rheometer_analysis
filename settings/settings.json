@@ -1,7 +1,7 @@
 {
     "input_file": "data/20250707Glass12.xlsx",
     "skip_sheets": 1,
-    "ignore_sheets_end": 0,
+    "ignore_sheets_end": 1,
     "savgol_window_length": 5,
     "savgol_polyorder": 2,
     "output_folder": "results",

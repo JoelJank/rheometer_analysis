@@ -20,8 +20,8 @@ def get_settings_file(Settings_path):
 
 def get_excel_file(Excel_path, Sheet_name):
     file = pd.read_excel(Excel_path, sheet_name = Sheet_name,header=0, skiprows=[1,2])
-    mask = file.map(lambda x: isinstance(x, str)).any(axis=1)
-    file = file[~mask].reset_index(drop=True)
+    mask = file.map(lambda x: isinstance(x, str,)).any(axis=1)
+    file = file[~mask].dropna().reset_index(drop=True)
     return file
 
 def lin_fit(m, n, x):
@@ -33,16 +33,16 @@ plt.style.use(settings["plotstyle"])
 
 sheetnames = get_sheetnames(settings["input_file"])
 del sheetnames[:settings["skip_sheets"]]
-del sheetnames[:-settings["ignore_sheets_end"]]
-
+sheetnames = sheetnames[:-settings["ignore_sheets_end"] or None]
 
 processed_data = []
+print("Program started")
 
 for sheet in sheetnames:
     current_data = []
     df = get_excel_file(settings["input_file"], sheet)
     time_col = df["Time"].values #Determine switch between different consolidation forces
-    jumps_where = np.where(np.diff(time_col) > 10)[0]
+    jumps_where = np.where(np.abs(np.diff(time_col)) > 10)[0]
     jumps_end = jumps_where[-1]+jumps_where[0]+1
     jumps = np.append(jumps_where, jumps_end)
     jump_starts = np.array([0])
@@ -101,9 +101,8 @@ for sheet in sheetnames:
     
     #Daten für Mohr-Coulomb speichern
     current_data = np.array(current_data)
-    current_data = np.reshape(current_data, (2, 3))
+    current_data = np.reshape(current_data, (2, len(jump_starts)))
     processed_data.append(current_data)
-print(len(processed_data))
     
     
 #Mohr-Coulomb
@@ -113,16 +112,38 @@ plt.figure(figsize=(12,5))
 for i in range(len(processed_data)):
     plot = plt.plot(processed_data[i][0],processed_data[i][1], linestyle = "None", marker = "x", label = f"{sheetnames[i]}")
     m, n = np.polyfit(processed_data[i][0], processed_data[i][1], 1)
-    fit_data.append([m, n])
+    y_intercept = round(n, 4)
+    angle = round(math.degrees(math.atan(m)),4)
+    fit_data.append([m, n, y_intercept, angle])
     x = np.linspace(0, max(processed_data[i][0]), 100)
     plt.plot(x, lin_fit(m, n, x), linestyle = "--", color = plot[0].get_color())
+    plt.text(0.2,0.95 - i*0.05,
+             f"{sheetnames[i]}: y-intercept = {y_intercept}; Angle = {angle}°",
+             transform = plt.gca().transAxes,
+             fontsize=12,
+             verticalalignment='top')
 plt.xlabel("Normal Shear [Pa]"); plt.ylabel("Shear Stress [Pa]")
 plt.title(f"{settings['title_of_experiment']} Mohr-Coulomb")
 plt.legend(loc='upper left')
 plt.grid()
+
+
+
 plt.savefig(f"{settings['output_folder']}/{settings['title_of_experiment']}_Mohr-Coulomb.png", dpi=300, bbox_inches='tight')
 
 
+
+
+with open(f"{settings['output_folder']}/mohr_coulomb.txt", "w") as f:
+    f.write("Sheetname \t m \t n \t y-intercept \t Angle \n")
+    for i in range(len(fit_data)):
+        f.write(f"{sheetnames[i]} \t {round(fit_data[i][0],3)} \t {round(fit_data[i][1],3)} \t {fit_data[i][2]} \t {fit_data[i][3]}")
+
+print("Program finished")
+
+
+        
+    
 
     
     

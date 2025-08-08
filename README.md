@@ -1,4 +1,4 @@
-﻿# rheometer_analysis
+﻿# Rheometer Analysis
 This program aims to make the analysis of experimental results of a Rheometer to determine the Mohr-Coulomb diagram and the properties of the given material under investigation.
 
 ## Still to do:
@@ -48,5 +48,6 @@ Best practice:
 
 
 Contact: joel.jankowiak@stud.uni-due.de
+
 
 

@@ -3,7 +3,8 @@ This program aims to make the analysis of experimental results of a Rheometer to
 
 ## Still to do:
 - Add error bars
-  - Idea: Determine standard deviation from mean of normal stress (easy) -> how to determine the standard deviation of the maximum? Ideas?
+  - Idea: Determine standard deviation from mean of normal stress (this will give the deviation in the normal stress direction + maybe error of Anton Paar included?) -> how to determine the standard deviation of the maximum? Ideas?
+  -one could look at the differences deviating from the maximum point taken since there is no mean determined.
   - include error range of Rheometer?
 - Figure out what is the best way to present the results
 - Talk about what results we want to have a specific look at AND what experiments are yet to be ran.

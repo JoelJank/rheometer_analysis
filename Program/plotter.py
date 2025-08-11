@@ -132,7 +132,7 @@ plt.grid()
 plt.savefig(f"{settings['output_folder']}/{settings['title_of_experiment']}_Mohr-Coulomb.png", dpi=300, bbox_inches='tight')
 
 
-
+#Test
 
 with open(f"{settings['output_folder']}/mohr_coulomb.txt", "w") as f:
     f.write("Sheetname \t m \t n \t y-intercept \t Angle \n")
